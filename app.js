@@ -37,7 +37,7 @@ const { sequelize } = require('./models/index');
 
 // Paths and routes to use together
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/users', usersRouter);
 // app.use('/books', booksRouter);
 
 // send 404 if no other route matched
