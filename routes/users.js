@@ -15,15 +15,33 @@ function asyncHandler(cb){
   }
 }
 
-/* GET/Read 
-** route that will return all properties and values for the currently authenticated User along with a 200 HTTP status code.
+/* (GET/Read) 
+** Return all properties and values for the currently authenticated User along with a 200 HTTP status code.
 */
 router.get('/', asyncHandler(async (req, res) => {
   const users = await User.findAll();
-  const info = users.row; 
     res.json({
       users,
     });
+}));
+
+/* (POST/Create) 
+** Create a new user, set the Location header to "/", and return a 201 HTTP status code and no content.
+*/
+router.post('/', asyncHandler(async (req, res) => {
+  try {
+    await User.create(req.body);
+    res.location('/');
+    res.status(201).end();
+  } catch (error) {
+    if(error.name === "SequelizeValidationError") { 
+      res.json({ 
+        "message": 'Sequelize error'
+       })
+    } else {
+      throw error;
+    }  
+  }
 }));
 
 module.exports = router;
