@@ -19,11 +19,10 @@ function asyncHandler(cb){
 ** route that will return all properties and values for the currently authenticated User along with a 200 HTTP status code.
 */
 router.get('/', asyncHandler(async (req, res) => {
-  const users = await User.findAndCountAll();
+  const users = await User.findAll();
+  const info = users.row; 
     res.json({
-        message: 'Check GET',
-        'Number of users': users.count,
-        'Users info': users.row,
+      users,
     });
 }));
 
