@@ -16,11 +16,6 @@ app.use(express.json());
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
 
-// Route file paths
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const coursesRouter = require('./routes/courses');
-
 // import the instance of sequelize that was instantiated in models/index.js
 const { sequelize } = require('./models/index'); 
 
@@ -37,6 +32,11 @@ const { sequelize } = require('./models/index');
     console.error('Unable to connect to the database:', error);
   }
 })();
+
+// Route file paths
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const coursesRouter = require('./routes/courses');
 
 // Paths and routes to use together
 app.use('/', indexRouter);
