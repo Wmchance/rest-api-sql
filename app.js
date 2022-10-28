@@ -14,16 +14,9 @@ const app = express();
 app.use(morgan('dev'));
 
 // Route file paths
-// const indexRouter = require('./routes/index');
+const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 // const booksRouter = require('./routes/books');
-
-// setup a friendly greeting for the root route
-app.get('/', (req, res) => {
-  res.json({
-    message: 'Welcome to the REST API project!',
-  });
-});
 
 // import the instance of sequelize that was instantiated in models/index.js
 const { sequelize } = require('./models/index'); 
@@ -43,7 +36,7 @@ const { sequelize } = require('./models/index');
 })();
 
 // Paths and routes to use together
-// app.use('/', indexRouter);
+app.use('/', indexRouter);
 app.use('/users', usersRouter);
 // app.use('/books', booksRouter);
 
