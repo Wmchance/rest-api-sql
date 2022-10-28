@@ -13,6 +13,11 @@ const app = express();
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
 
+// Route file paths
+// const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+// const booksRouter = require('./routes/books');
+
 // setup a friendly greeting for the root route
 app.get('/', (req, res) => {
   res.json({
@@ -36,6 +41,11 @@ const { sequelize } = require('./models/index');
     console.error('Unable to connect to the database:', error);
   }
 })();
+
+// Paths and routes to use together
+// app.use('/', indexRouter);
+app.use('/users', usersRouter);
+// app.use('/books', booksRouter);
 
 // send 404 if no other route matched
 app.use((req, res) => {
