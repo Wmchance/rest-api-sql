@@ -16,7 +16,7 @@ app.use(morgan('dev'));
 // Route file paths
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-// const booksRouter = require('./routes/books');
+const coursesRouter = require('./routes/courses');
 
 // import the instance of sequelize that was instantiated in models/index.js
 const { sequelize } = require('./models/index'); 
@@ -38,7 +38,7 @@ const { sequelize } = require('./models/index');
 // Paths and routes to use together
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
-// app.use('/books', booksRouter);
+app.use('/api/courses', coursesRouter);
 
 // send 404 if no other route matched
 app.use((req, res) => {
