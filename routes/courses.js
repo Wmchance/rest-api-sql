@@ -40,11 +40,11 @@ router.get('/:id', asyncHandler(async (req, res) => {
 /* (POST/Create) 
 ** Create a new course, set the Location header to the URI for the newly created course, and return a 201 HTTP status code and no content
 */
-//TODO: set the Location header to the URI for the newly created course
+//TODO add try/catch
 router.post('/', asyncHandler(async (req, res) => {
   try {
-    await Course.create(req.body);
-    res.location('/');
+    const course = await Course.create(req.body);
+    res.location(`/${course.id}`);
     res.status(201).end();
   } catch (error) {
     if(error.name === "SequelizeValidationError") { 
