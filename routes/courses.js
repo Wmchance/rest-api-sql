@@ -56,5 +56,18 @@ router.post('/', asyncHandler(async (req, res) => {
   }
 }));
 
+/* (DELETE/Delete) 
+** Delete the corresponding course and return a 204 HTTP status code and no content
+*/
+//TODO add try/catch
+router.delete('/:id', asyncHandler(async (req ,res) => {
+  const course = await Course.findByPk(req.params.id);
+  if(course) {
+    await course.destroy(); //Deletes course from db
+    res.status(204).end();
+  } else {
+    res.status(404).end();
+  }
+}));
 
 module.exports = router;
