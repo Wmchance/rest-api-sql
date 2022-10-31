@@ -40,6 +40,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 /* (POST/Create) 
 ** Create a new course, set the Location header to the URI for the newly created course, and return a 201 HTTP status code and no content
 */
+//TODO: set the Location header to the URI for the newly created course
 router.post('/', asyncHandler(async (req, res) => {
   try {
     await Course.create(req.body);
@@ -53,6 +54,20 @@ router.post('/', asyncHandler(async (req, res) => {
     } else {
       throw error;
     }  
+  }
+}));
+
+/* (PUT/Update) 
+** Update the corresponding course and return a 204 HTTP status code and no content
+*/
+//TODO add try/catch
+router.put('/:id', asyncHandler(async (req ,res) => {
+  const course = await Course.findByPk(req.params.id);
+  if(course) {
+    await course.update(req.body); //Updates course
+    res.status(204).end();
+  } else {
+    res.status(404).end();
   }
 }));
 
