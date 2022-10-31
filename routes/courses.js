@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { Course } = require('../models');
+const { User } = require('../models');
 
 /* Handler function to wrap each route. */
 function asyncHandler(cb){
@@ -19,7 +20,7 @@ function asyncHandler(cb){
 ** Return all properties and values for the currently authenticated User along with a 200 HTTP status code.
 */
 router.get('/', asyncHandler(async (req, res) => {
-  const courses = await Course.findAll();
+  const courses = await Course.findAll({include: User});
     res.json({
       courses,
     });
@@ -29,7 +30,7 @@ router.get('/', asyncHandler(async (req, res) => {
 ** Return the corresponding course including the User associated with that course and a 200 HTTP status code
 */
 router.get('/:id', asyncHandler(async (req, res) => {
-  const course = await Course.findByPk(req.params.id);
+  const course = await Course.findByPk(req.params.id, {include: User});
   console.log(course);
     res.json({
       course,
