@@ -40,32 +40,40 @@ router.get('/:id', asyncHandler(async (req, res) => {
 /* (POST/Create) 
 ** Create a new course, set the Location header to the URI for the newly created course, and return a 201 HTTP status code and no content
 */
-//TODO add try/catch
+//TODO try/catch?
 router.post('/', asyncHandler(async (req, res) => {
-  try {
-    const course = await Course.create(req.body);
-    res.location(`/${course.id}`);
-    res.status(201).end();
-  } catch (error) {
-    if(error.name === "SequelizeValidationError") { 
-      res.json({ 
-        "message": 'Sequelize error'
-       })
-    } else {
-      throw error;
-    }  
+  if(req.body.title && req.body.description) {  
+    try {
+      const course = await Course.create(req.body);
+      res.location(`/${course.id}`);
+      res.status(201).end();
+    } catch (error) {
+      if(error.name === "SequelizeValidationError") { 
+        res.json({ 
+          "message": 'Sequelize error'
+        })
+      } else {
+        throw error;
+      }  
+    }
+  } else {
+    res.status(400).json({ message: "Please include a 'title' & 'description'" })
   }
 }));
 
 /* (PUT/Update) 
 ** Update the corresponding course and return a 204 HTTP status code and no content
 */
-//TODO add try/catch
+//TODO add try/catch?
 router.put('/:id', asyncHandler(async (req ,res) => {
   const course = await Course.findByPk(req.params.id);
   if(course) {
-    await course.update(req.body); //Updates course
-    res.status(204).end();
+    if(req.body.title && req.body.description) {
+      await course.update(req.body);
+      res.status(204).end();
+    } else {
+      res.status(400).json({ message: "Please include a 'title' & 'description'" })
+    }
   } else {
     res.status(404).end();
   }

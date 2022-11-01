@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Course, { foreignKey: 'userId' });
     }
   }
+  //TODO: Add validation
   User.init({
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,

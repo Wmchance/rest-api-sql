@@ -29,18 +29,22 @@ router.get('/', asyncHandler(async (req, res) => {
 ** Create a new user, set the Location header to "/", and return a 201 HTTP status code and no content.
 */
 router.post('/', asyncHandler(async (req, res) => {
-  try {
-    await User.create(req.body);
-    res.location('/');
-    res.status(201).end();
-  } catch (error) {
-    if(error.name === "SequelizeValidationError") { 
-      res.json({ 
-        "message": 'Sequelize error'
-       })
-    } else {
-      throw error;
-    }  
+  if(req.body.firstName && req.body.lastName && req.body.emailAddress && req.body.password) {
+    try {
+      await User.create(req.body);
+      res.location('/');
+      res.status(201).end();
+    } catch (error) {
+      if(error.name === "SequelizeValidationError") { 
+        res.json({ 
+          "message": 'Sequelize error'
+        })
+      } else {
+        throw error;
+      }  
+    }
+  } else {
+    res.status(400).json({message: 'Please enter all personal information'})
   }
 }));
 
