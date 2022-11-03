@@ -59,22 +59,16 @@ router.get('/:id', asyncHandler(async (req, res) => {
 //TODO is userId a required value?
 //TODO one of the above two must be true
 router.post('/', authenticateUser, asyncHandler(async (req, res) => {
-  if(req.body.title && req.body.description) {  
-    try {
-      const course = await Course.create(req.body);
-      res.location(`/api/courses/${course.id}`);
-      res.status(201).end();
-    } catch (error) {
-      if(error.name === "SequelizeValidationError") { 
-        res.json({ 
-          "message": 'Sequelize error'
-        })
-      } else {
-        throw error;
-      }  
-    }
-  } else {
-    res.status(400).json({ message: "Please include a 'title' & 'description'" })
+  try {
+    const course = await Course.create(req.body);
+    res.location(`/api/courses/${course.id}`);
+    res.status(201).end();
+  } catch (error) {
+    if(error.name === "SequelizeValidationError") { 
+      res.status(400).json({ message: error.message })
+    } else {
+      throw error;
+    }  
   }
 }));
 
@@ -85,15 +79,19 @@ router.post('/', authenticateUser, asyncHandler(async (req, res) => {
 router.put('/:id', authenticateUser, asyncHandler(async (req ,res) => {
   const course = await Course.findByPk(req.params.id);
   if(course) {
-    if(req.body.title && req.body.description) {
-      if(req.currentUser.id === course.userId) {
+    if(req.currentUser.id === course.userId) {
+      try {
         await course.update(req.body);
         res.status(204).end();
-      } else {
-        res.status(403).json({ message: "403 Forbidden" })
+      } catch (error) {
+        if(error.name === "SequelizeValidationError") { 
+          res.status(400).json({ message: error.message })
+        } else {
+          throw error;
+        }  
       }
     } else {
-      res.status(400).json({ message: "Please include a 'title' & 'description'" })
+      res.status(403).json({ message: "403 Forbidden" })
     }
   } else {
     res.status(404).end();

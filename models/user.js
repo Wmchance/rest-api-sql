@@ -56,7 +56,8 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    //notNull & notEmpty still allow the creation of a user with a blank password. Only len stops the creation
+    //notEmpty still allows the creation of a user with a blank password.
+    //TODO fix password validation for empty strings
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -67,7 +68,6 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           msg: 'Please provide a password',
         },
-        len: [2,15]
       },
       set(val) {
         const hashedPassword = bcrypt.hashSync(val, 10);
