@@ -37,25 +37,19 @@ router.get('/', authenticateUser, asyncHandler(async (req, res) => {
 /* (POST/Create) 
 ** Create a new user, set the Location header to "/", and return a 201 HTTP status code and no content.
 */
-//TODO Add email validation(catch invalid email addresses)
-//TODO Add Sequelize validation
 router.post('/', asyncHandler(async (req, res) => {
-  if(req.body.firstName && req.body.lastName && req.body.emailAddress && req.body.password) {
-    try {
-      await User.create(req.body);
-      res.location('/');
-      res.status(201).end();
-    } catch (error) {
-      if(error.name === "SequelizeValidationError") { 
-        res.status(400).json({ message: error.message })
-      } else if(error.name === "SequelizeUniqueConstraintError") {
-        res.status(400).json({message: 'Username already exists. Please chose a new username'})
-      } else {
-        throw error;
-      }  
-    }
-  } else {
-    res.status(400).json({message: 'Please enter all required information'})
+  try {
+    await User.create(req.body);
+    res.location('/');
+    res.status(201).end();
+  } catch (error) {
+    if(error.name === "SequelizeValidationError") { 
+      res.status(400).json({ message: error.message })
+    } else if(error.name === "SequelizeUniqueConstraintError") {
+      res.status(400).json({message: 'Username already exists. Please chose a new username'})
+    } else {
+      throw error;
+    }  
   }
 }));
 

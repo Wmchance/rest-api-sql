@@ -18,19 +18,61 @@ module.exports = (sequelize, DataTypes) => {
   }
   //TODO: Add validation
   User.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Please provide a first name',
+        },
+        notEmpty: {
+          msg: 'Please provide a first name',
+        },
+      },
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Please provide a last name',
+        },
+        notEmpty: {
+          msg: 'Please provide a last name',
+        },
+      },
+    },
     emailAddress: {
       type: DataTypes.STRING,
       unique: true,
-      validate: {isEmail: true}
+      allowNull: false,
+      validate: {
+        isEmail: true,
+        notNull: {
+          msg: 'Please provide a email address',
+        },
+        notEmpty: {
+          msg: 'Please provide a email address',
+        },
+      },
     },
+    //notNull & notEmpty still allow the creation of a user with a blank password. Only len stops the creation
     password: {
       type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: 'Please provide a password',
+        },
+        notEmpty: {
+          msg: 'Please provide a password',
+        },
+        len: [2,15]
+      },
       set(val) {
         const hashedPassword = bcrypt.hashSync(val, 10);
         this.setDataValue('password', hashedPassword);
-      }
+      },
     }
   }, {
     sequelize,
