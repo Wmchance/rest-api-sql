@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
+
+// Middleware to authenticate requests using Basic Auth.
 const { authenticateUser } = require('../middleware/auth-user');
 
 const { User } = require('../models');
 
 /* Handler function to wrap each route. */
+//TODO Move to middleware?
 function asyncHandler(cb){
   return async(req, res, next) => {
     try {
@@ -25,7 +28,7 @@ router.get('/', authenticateUser, asyncHandler(async (req, res) => {
   res.json({
     user,
   });
-  
+
 }));
 
 /* (POST/Create) 

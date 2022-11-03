@@ -4,6 +4,7 @@ const router = express.Router();
 const { User } = require('../models');
 
 /* Handler function to wrap each route. */
+//TODO move to middleware?
 function asyncHandler(cb){
   return async(req, res, next) => {
     try {
