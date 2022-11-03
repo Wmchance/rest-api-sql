@@ -25,7 +25,10 @@ function asyncHandler(cb){
 */
 //TODO limit user info shown (First & last name only?)
 router.get('/', asyncHandler(async (req, res) => {
-  const courses = await Course.findAll({include: User});
+  const courses = await Course.findAll({
+    include: User,
+    attributes: { exclude: ['createdAt', 'updatedAt'] }
+  });
     res.json({
       courses,
     });
@@ -36,8 +39,11 @@ router.get('/', asyncHandler(async (req, res) => {
 */
 //TODO limit user info shown (First & last name only?)
 router.get('/:id', asyncHandler(async (req, res) => {
-  const course = await Course.findByPk(req.params.id, {include: User});
-  console.log(course);
+  const course = await Course.findOne({
+    where: {id: req.params.id}, 
+    include: User, 
+    attributes: { exclude: ['createdAt', 'updatedAt'] }
+  });
     res.json({
       course,
     });
