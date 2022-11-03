@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { authenticateUser } = require('../middleware/auth-user');
 
 const { User } = require('../models');
 
@@ -18,11 +19,13 @@ function asyncHandler(cb){
 /* (GET/Read) 
 ** Return all properties and values for the currently authenticated User along with a 200 HTTP status code.
 */
-router.get('/', asyncHandler(async (req, res) => {
-  const users = await User.findAll();
-    res.json({
-      users,
-    });
+router.get('/', authenticateUser, asyncHandler(async (req, res) => {
+  const user = await User.findByPk(req.currentUser.id);
+
+  res.json({
+    user,
+  });
+  
 }));
 
 /* (POST/Create) 
