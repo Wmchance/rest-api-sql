@@ -23,7 +23,10 @@ function asyncHandler(cb){
 ** Return all properties and values for the currently authenticated User along with a 200 HTTP status code.
 */
 router.get('/', authenticateUser, asyncHandler(async (req, res) => {
-  const user = await User.findByPk(req.currentUser.id);
+  const user = await User.findOne({
+    where: {id: req.currentUser.id},
+    attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+  });
 
   res.json({
     user,
