@@ -47,7 +47,7 @@ router.post('/', asyncHandler(async (req, res) => {
       res.status(201).end();
     } catch (error) {
       if(error.name === "SequelizeValidationError") { 
-        res.json({ message: error.message })
+        res.status(400).json({ message: error.message })
       } else if(error.name === "SequelizeUniqueConstraintError") {
         res.status(400).json({message: 'Username already exists. Please chose a new username'})
       } else {
