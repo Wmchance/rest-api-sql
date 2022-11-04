@@ -11,21 +11,25 @@ exports.authenticateUser = async (req, res, next) => {
     const credentials = auth(req);
 
     if (credentials) {
-        const user = await User.findOne({ where: {emailAddress: credentials.name} });
-        if (user) {
-            const authenticated = bcrypt
-                .compareSync(credentials.pass, user.password);
+        try{
+            const user = await User.findOne({ where: {emailAddress: credentials.name} });
+            if (user) {
+                const authenticated = bcrypt
+                    .compareSync(credentials.pass, user.password);
+                
+                if (authenticated) { // If the passwords match
+                    console.log(`Authentication successful for username: ${user.emailAddress}`);
             
-            if (authenticated) { // If the passwords match
-                console.log(`Authentication successful for username: ${user.emailAddress}`);
-        
-                // Store the user on the Request object.
-                req.currentUser = user;
+                    // Store the user on the Request object.
+                    req.currentUser = user;
+                } else {
+                    message = `Authentication failure for username: ${user.emailAddress}`;
+                }
             } else {
-                message = `Authentication failure for username: ${user.emailAddress}`;
+                message = `User not found for username: ${credentials.name}`;
             }
-        } else {
-            message = `User not found for username: ${credentials.name}`;
+        } catch (error) {
+            throw error;
         }
     } else {
         message = 'Auth header not found';
