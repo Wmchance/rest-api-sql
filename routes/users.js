@@ -4,20 +4,10 @@ const router = express.Router();
 // Middleware to authenticate requests using Basic Auth.
 const { authenticateUser } = require('../middleware/auth-user');
 
-const { User } = require('../models');
+// Handler function to wrap each route. //
+const asyncHandler = require ('../middleware/asyncHandler').asyncHandler;
 
-/* Handler function to wrap each route. */
-//TODO Move to middleware?
-function asyncHandler(cb){
-  return async(req, res, next) => {
-    try {
-      await cb(req, res, next)
-    } catch(error){
-      // Forward error to the global error handler
-      next(error);
-    }
-  }
-}
+const { User } = require('../models');
 
 /* (GET/Read) 
 ** Return all properties and values for the currently authenticated User along with a 200 HTTP status code.

@@ -7,18 +7,8 @@ const { authenticateUser } = require('../middleware/auth-user');
 const { Course } = require('../models');
 const { User } = require('../models');
 
-/* Handler function to wrap each route. */
-//TODO move to middleware?
-function asyncHandler(cb){
-  return async(req, res, next) => {
-    try {
-      await cb(req, res, next)
-    } catch(error){
-      // Forward error to the global error handler
-      next(error);
-    }
-  }
-}
+// Handler function to wrap each route. //
+const asyncHandler = require ('../middleware/asyncHandler').asyncHandler;
 
 /* (GET/Read) 
 ** Return all properties and values for the currently authenticated User along with a 200 HTTP status code.
