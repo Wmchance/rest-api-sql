@@ -23,29 +23,33 @@ function asyncHandler(cb){
 /* (GET/Read) 
 ** Return all properties and values for the currently authenticated User along with a 200 HTTP status code.
 */
-//TODO limit user info shown (First & last name only?)
 router.get('/', asyncHandler(async (req, res) => {
   const courses = await Course.findAll({
-    include: User,
+    include: {
+      model: User,
+      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    },
     attributes: { exclude: ['createdAt', 'updatedAt'] }
   });
     res.json({
-      courses,
+      courses
     });
 }));
 
 /* (GET/Read) 
 ** Return the corresponding course including the User associated with that course and a 200 HTTP status code
 */
-//TODO limit user info shown (First & last name only?)
 router.get('/:id', asyncHandler(async (req, res) => {
   const course = await Course.findOne({
     where: {id: req.params.id}, 
-    include: User, 
+    include: {
+      model: User,
+      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    },
     attributes: { exclude: ['createdAt', 'updatedAt'] }
   });
     res.json({
-      course,
+      course
     });
 }));
 

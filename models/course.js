@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       Course.belongsTo(models.User, { foreignKey: 'userId' });
     }
   }
-  //TODO: Add validation
   Course.init({
     title: {
       type: DataTypes.STRING,
