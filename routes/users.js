@@ -13,15 +13,16 @@ const { User } = require('../models');
 ** Return all properties and values for the currently authenticated User along with a 200 HTTP status code.
 */
 router.get('/', authenticateUser, asyncHandler(async (req, res) => {
-  const user = await User.findOne({
-    where: {id: req.currentUser.id},
-    attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
-  });
-
-  res.json({
-    user,
-  });
-
+  try {
+    const user = await User.findOne({
+      where: {id: req.currentUser.id},
+      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    });
+    res.json({user});
+  } catch (error) {
+    throw error; 
+  }
+  
 }));
 
 /* (POST/Create) 
