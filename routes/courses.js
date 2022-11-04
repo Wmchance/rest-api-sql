@@ -11,7 +11,7 @@ const { Course } = require('../models');
 const { User } = require('../models');
 
 /* (GET/Read) 
-** Return all properties and values for the currently authenticated User along with a 200 HTTP status code.
+** Return all courses including the User associated with each course and a 200 HTTP status code
 */
 router.get('/', asyncHandler(async (req, res) => {
   try{
