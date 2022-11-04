@@ -43,7 +43,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     emailAddress: {
       type: DataTypes.STRING,
-      unique: true,
+      unique: {
+        msg: 'Username already exists. Please chose a new username',
+      },
       allowNull: false,
       validate: {
         isEmail: true,
@@ -55,8 +57,6 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    //notEmpty still allows the creation of a user with a blank password.
-    //TODO fix password validation for empty strings
     password: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -69,8 +69,10 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       set(val) {
-        const hashedPassword = bcrypt.hashSync(val, 10);
-        this.setDataValue('password', hashedPassword);
+        if(val !== "") {
+          const hashedPassword = bcrypt.hashSync(val, 10);
+          this.setDataValue('password', hashedPassword);
+        }
       },
     }
   }, {

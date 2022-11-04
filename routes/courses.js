@@ -56,12 +56,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 /* (POST/Create) 
 ** Create a new course, set the Location header to the URI for the newly created course, and return a 201 HTTP status code and no content
 */
-//TODO Add Sequelize validation
-//TODO Add additional validation criteria
 //TODO try/catch?
-//TODO use req.currentUser to process request? Should users only be able to create/assign courses for themselves?
-//TODO is userId a required value?
-//TODO one of the above two must be true
 router.post('/', authenticateUser, asyncHandler(async (req, res) => {
   try {
     const course = await Course.create(req.body);
