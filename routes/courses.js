@@ -64,7 +64,8 @@ router.post('/', authenticateUser, asyncHandler(async (req, res) => {
     res.status(201).end();
   } catch (error) {
     if(error.name === "SequelizeValidationError") { 
-      res.status(400).json({ message: error.message })
+      const errors = error.errors.map(err => err.message);
+      res.status(400).json({ errors })
     } else {
       throw error;
     }  
@@ -84,7 +85,8 @@ router.put('/:id', authenticateUser, asyncHandler(async (req ,res) => {
           res.status(204).end();
         } catch (error) {
           if(error.name === "SequelizeValidationError") { 
-            res.status(400).json({ message: error.message })
+            const errors = error.errors.map(err => err.message);
+            res.status(400).json({ errors })
           } else {
             throw error;
           }  
