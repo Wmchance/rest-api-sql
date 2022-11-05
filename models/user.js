@@ -68,16 +68,16 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Please provide a password',
         },
       },
-      set(val) {
-        if(val !== "") {
-          const hashedPassword = bcrypt.hashSync(val, 10);
-          this.setDataValue('password', hashedPassword);
-        }
-      },
     }
   }, {
+    hooks: {
+      beforeCreate: async (user) => {
+        user.password = await bcrypt.hashSync(user.password, 10);
+      },
+    },
     sequelize,
     modelName: 'User',
   });
   return User;
 };
+
