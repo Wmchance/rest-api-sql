@@ -10,6 +10,15 @@ const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'tr
 // create the Express app
 const app = express();
 
+// Enable & configure All CORS Requests
+var cors = require('cors')
+app.use(cors())
+
+var corsOptions = {
+  origin: 'http://localhost:5000/',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 // parse all of the json requests
 app.use(express.json());
 
